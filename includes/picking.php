@@ -203,19 +203,21 @@ function whpl_pick_view_head( $title ) {
 			.bar .who span { display: block; font-size: 13px; color: #646970; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 			.bar .count { font-size: 18px; font-weight: 700; white-space: nowrap; }
 			main { max-width: 760px; margin: 0 auto; padding: 12px 12px 96px; }
-			h2 { font-size: 14px; text-transform: uppercase; letter-spacing: .03em; color: #646970; margin: 20px 4px 8px; }
+			h2 { position: sticky; top: 60px; z-index: 5; font-size: 14px; text-transform: uppercase; letter-spacing: .03em; color: #646970; margin: 20px 0 8px; padding: 6px 4px; background: #f4f5f7; }
 			.row { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: #fff; border: 1px solid #dcdcde; border-radius: 10px; padding: 12px; margin-bottom: 8px; min-height: 60px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-			.row .tick { flex: 0 0 28px; height: 28px; border: 2px solid #8c8f94; border-radius: 6px; text-align: center; line-height: 24px; font-size: 18px; color: transparent; }
+			.row .tick { position: relative; flex: 0 0 28px; height: 28px; border: 2px solid #8c8f94; border-radius: 6px; text-align: center; line-height: 24px; font-size: 18px; color: transparent; }
 			.row .qty { flex: 0 0 44px; font-size: 20px; font-weight: 700; text-align: center; }
 			.row .info { flex: 1; min-width: 0; }
 			.row .info .name { font-size: 15px; font-weight: 600; }
 			.row .info .sub { font-size: 13px; color: #646970; }
-			.row .miss { flex: 0 0 44px; height: 44px; border: 1px solid #dcdcde; border-radius: 8px; background: #f6f7f7; font-size: 18px; font-weight: 700; color: #996800; cursor: pointer; }
+			.row .miss { flex: 0 0 auto; height: 44px; padding: 0 14px; border: 1px solid #dcdcde; border-radius: 999px; background: #f6f7f7; font-size: 14px; font-weight: 600; color: #996800; cursor: pointer; white-space: nowrap; }
 			.row[data-status="picked"] { background: #e7f6ec; border-color: #7ad03a; }
 			.row[data-status="picked"] .tick { background: #2fb344; border-color: #2fb344; color: #fff; }
 			.row[data-status="missing"] { background: #fdecea; border-color: #d63638; }
-			.row[data-status="missing"] .tick { border-color: #d63638; color: #d63638; }
-			.row[data-status="missing"] .tick::after { content: "!"; }
+			.row[data-status="missing"] .tick { border-color: #d63638; }
+			.row[data-status="missing"] .tick::after { content: "!"; position: absolute; inset: 0; line-height: 24px; color: #d63638; }
+			.row[data-status="missing"] .miss { background: #d63638; border-color: #d63638; color: #fff; }
+			#whpl-complete.ready { background: #2fb344; }
 			.actionbar { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid #dcdcde; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
 			.actionbar .inner { max-width: 760px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
 			.progress-track { flex: 1; height: 8px; background: #dcdcde; border-radius: 4px; overflow: hidden; }
@@ -332,15 +334,20 @@ add_action( 'admin_post_whpl_pick', function () {
 
 	$render_rows = function ( $rows ) {
 		foreach ( $rows as $row ) :
+			// Product names often already end with the package size — don't repeat it.
+			$package = $row['package'];
+			if ( '' !== $package && false !== stripos( $row['name'], $package ) ) {
+				$package = '';
+			}
 			?>
 			<div class="row" data-item="<?php echo esc_attr( $row['item_id'] ); ?>" data-status="<?php echo esc_attr( $row['pick'] ); ?>" role="button" tabindex="0">
 				<span class="tick">&#10003;</span>
 				<span class="qty"><?php echo esc_html( $row['qty'] ); ?></span>
 				<span class="info">
 					<span class="name"><?php echo esc_html( $row['name'] ); ?></span>
-					<span class="sub"><?php echo esc_html( trim( $row['package'] . ( $row['package'] && $row['sku'] ? ' · ' : '' ) . $row['sku'] ) ); ?></span>
+					<span class="sub"><?php echo esc_html( trim( $package . ( $package && $row['sku'] ? ' · ' : '' ) . $row['sku'] ) ); ?></span>
 				</span>
-				<button type="button" class="miss" title="<?php esc_attr_e( 'Mark as missing', 'warehouse-picklist' ); ?>">!</button>
+				<button type="button" class="miss" title="<?php esc_attr_e( 'Mark as missing', 'warehouse-picklist' ); ?>"><?php esc_html_e( 'Missing', 'warehouse-picklist' ); ?></button>
 			</div>
 			<?php
 		endforeach;
@@ -436,17 +443,38 @@ add_action( 'admin_post_whpl_pick', function () {
 			if (count) { count.textContent = progress.resolved + '/' + progress.total; }
 			var fill = document.getElementById('whpl-fill');
 			if (fill) { fill.style.width = (progress.total ? Math.round(100 * progress.resolved / progress.total) : 0) + '%'; }
+			var complete = document.getElementById('whpl-complete');
+			if (complete) { complete.classList.toggle('ready', progress.total > 0 && progress.resolved >= progress.total); }
+		}
+
+		function localProgress() {
+			var resolved = 0;
+			document.querySelectorAll('.row').forEach(function (r) {
+				if (r.dataset.status === 'picked' || r.dataset.status === 'missing') { resolved++; }
+			});
+			return { resolved: resolved, total: cfg.total };
 		}
 
 		function setPick(row, status) {
+			var prev = row.dataset.status;
+			// Optimistic: flip the row immediately, revert if the save fails.
+			row.dataset.status = status;
+			refresh(localProgress());
+
 			post('whpl_set_pick', { item_id: row.dataset.item, status: status }).then(function (resp) {
 				if (resp && resp.success) {
 					row.dataset.status = resp.data.status;
 					refresh(resp.data.progress);
 				} else {
+					row.dataset.status = prev;
+					refresh(localProgress());
 					toast();
 				}
-			}).catch(toast);
+			}).catch(function () {
+				row.dataset.status = prev;
+				refresh(localProgress());
+				toast();
+			});
 		}
 
 		if (!cfg.locked) {

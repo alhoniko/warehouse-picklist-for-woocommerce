@@ -4,7 +4,7 @@ Tags: woocommerce, pick list, picking list, packing slip, warehouse
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,13 @@ No — it opens a print-optimized HTML view and uses the browser's print dialog 
 Users with the `manage_woocommerce` capability (shop managers and admins).
 
 == Changelog ==
+
+= 1.1.1 =
+* Pick mode: the missing-item button now has a text label instead of a bare "!" icon.
+* Pick mode: rows respond instantly to taps (optimistic UI with revert on failure).
+* Pick mode: sticky category headings while scrolling; complete button turns green when all rows are resolved.
+* Pick mode: package size is hidden from the sub-line when the product name already contains it.
+* Fixed overlapping glyphs in the missing-state checkbox.
 
 = 1.1.0 =
 * Tablet pick mode: picking queue, tap-to-pick view, missing-item marking, completion with order-note audit trail.
