@@ -1,0 +1,128 @@
+# Finnish translation for Warehouse Picklist for WooCommerce.
+msgid ""
+msgstr ""
+"Project-Id-Version: Warehouse Picklist for WooCommerce 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/alhoniko/warehouse-picklist-for-woocommerce/issues\n"
+"PO-Revision-Date: 2026-07-03 12:00+0300\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: warehouse-picklist\n"
+
+msgid "Warehouse Picklist requires WooCommerce to be installed and active."
+msgstr "Warehouse Picklist vaatii toimiakseen WooCommerce-lisäosan."
+
+msgid "Warehouse Picklist"
+msgstr "Warehouse Picklist"
+
+msgid "Picklist"
+msgstr "Keräyslista"
+
+msgid "Saving…"
+msgstr "Tallennetaan…"
+
+msgid "Saved."
+msgstr "Tallennettu."
+
+msgid "Error saving."
+msgstr "Virhe tallennuksessa."
+
+msgid "Select logo"
+msgstr "Valitse logo"
+
+msgid "Settings saved."
+msgstr "Asetukset tallennettu."
+
+msgid "Settings"
+msgstr "Asetukset"
+
+msgid "Category order"
+msgstr "Kategoriajärjestys"
+
+msgid "Logo"
+msgstr "Logo"
+
+msgid "Remove logo"
+msgstr "Poista logo"
+
+msgid "Shown at the top of the printed pick list."
+msgstr "Näytetään tulostettavan keräyslistan yläreunassa."
+
+msgid "Business name"
+msgstr "Yrityksen nimi"
+
+msgid "Printed as a text logo in the header when no logo image is set. Defaults to the site title."
+msgstr "Tulostuu tekstilogona yläreunaan, kun logokuvaa ei ole asetettu. Oletuksena sivuston otsikko."
+
+msgid "Footer note"
+msgstr "Alatunnisteteksti"
+
+msgid "Free-form text printed at the bottom of the pick list, e.g. a thank-you note for shipment inserts."
+msgstr "Vapaa teksti keräyslistan loppuun, esim. kiitosviesti kun lista lähtee lähetyksen mukana."
+
+msgid "Columns"
+msgstr "Sarakkeet"
+
+msgid "Show SKU column"
+msgstr "Näytä SKU-sarake"
+
+msgid "Show pick checkboxes"
+msgstr "Näytä keräysruudut"
+
+msgid "Package size meta key"
+msgstr "Pakkauskoon meta-avain"
+
+msgid "Product meta key for a package size column (ACF field names work). Leave empty to hide the column."
+msgstr "Tuotteen meta-avain pakkauskoko-sarakkeelle (ACF-kenttien nimet toimivat sellaisenaan). Jätä tyhjäksi, niin sarake ei näy."
+
+msgid "Save settings"
+msgstr "Tallenna asetukset"
+
+msgid "Drag categories into the order you want them to appear on printed pick lists — typically the order you walk your warehouse."
+msgstr "Raahaa kategoriat siihen järjestykseen, jossa haluat niiden tulostuvan keräyslistalle — tyypillisesti varastokiertosi mukaan."
+
+msgid "Save order"
+msgstr "Tallenna järjestys"
+
+msgid "Reset to default"
+msgstr "Palauta oletusjärjestys"
+
+msgid "Print pick list"
+msgstr "Tulosta keräyslista"
+
+msgid "You do not have permission to do that."
+msgstr "Ei oikeuksia."
+
+msgid "Order not found."
+msgstr "Tilausta ei löytynyt."
+
+#. translators: %s: order number
+msgid "Pick list — Order #%s"
+msgstr "Keräyslista — Tilaus #%s"
+
+msgid "Pick list"
+msgstr "Keräyslista"
+
+#. translators: %s: order number
+msgid "Order #%s"
+msgstr "Tilaus #%s"
+
+msgid "Qty"
+msgstr "Määrä"
+
+msgid "Product"
+msgstr "Tuote"
+
+msgid "Package"
+msgstr "Pakkaus"
+
+msgid "SKU"
+msgstr "SKU"
+
+msgid "Print"
+msgstr "Tulosta"
+
+msgid "Other"
+msgstr "Muut"

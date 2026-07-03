@@ -1,0 +1,166 @@
+# Copyright (C) 2026 Niko Alho
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Warehouse Picklist for WooCommerce 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/alhoniko/warehouse-picklist-for-woocommerce/issues\n"
+"POT-Creation-Date: 2026-07-03 12:00+0300\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: \n"
+"X-Domain: warehouse-picklist\n"
+
+#: warehouse-picklist.php
+msgid "Warehouse Picklist requires WooCommerce to be installed and active."
+msgstr ""
+
+#: includes/settings.php
+msgid "Warehouse Picklist"
+msgstr ""
+
+#: includes/settings.php
+msgid "Picklist"
+msgstr ""
+
+#: includes/settings.php
+msgid "Saving…"
+msgstr ""
+
+#: includes/settings.php
+msgid "Saved."
+msgstr ""
+
+#: includes/settings.php
+msgid "Error saving."
+msgstr ""
+
+#: includes/settings.php
+msgid "Select logo"
+msgstr ""
+
+#: includes/settings.php
+msgid "Settings saved."
+msgstr ""
+
+#: includes/settings.php
+msgid "Settings"
+msgstr ""
+
+#: includes/settings.php
+msgid "Category order"
+msgstr ""
+
+#: includes/settings.php
+msgid "Logo"
+msgstr ""
+
+#: includes/settings.php
+msgid "Remove logo"
+msgstr ""
+
+#: includes/settings.php
+msgid "Shown at the top of the printed pick list."
+msgstr ""
+
+#: includes/settings.php
+msgid "Business name"
+msgstr ""
+
+#: includes/settings.php
+msgid "Printed as a text logo in the header when no logo image is set. Defaults to the site title."
+msgstr ""
+
+#: includes/settings.php
+msgid "Footer note"
+msgstr ""
+
+#: includes/settings.php
+msgid "Free-form text printed at the bottom of the pick list, e.g. a thank-you note for shipment inserts."
+msgstr ""
+
+#: includes/settings.php
+msgid "Columns"
+msgstr ""
+
+#: includes/settings.php
+msgid "Show SKU column"
+msgstr ""
+
+#: includes/settings.php
+msgid "Show pick checkboxes"
+msgstr ""
+
+#: includes/settings.php
+msgid "Package size meta key"
+msgstr ""
+
+#: includes/settings.php
+msgid "Product meta key for a package size column (ACF field names work). Leave empty to hide the column."
+msgstr ""
+
+#: includes/settings.php
+msgid "Save settings"
+msgstr ""
+
+#: includes/category-order.php
+msgid "Drag categories into the order you want them to appear on printed pick lists — typically the order you walk your warehouse."
+msgstr ""
+
+#: includes/category-order.php
+msgid "Save order"
+msgstr ""
+
+#: includes/category-order.php
+msgid "Reset to default"
+msgstr ""
+
+#: includes/print.php
+msgid "Print pick list"
+msgstr ""
+
+#: includes/print.php
+msgid "You do not have permission to do that."
+msgstr ""
+
+#: includes/print.php
+msgid "Order not found."
+msgstr ""
+
+#. translators: %s: order number
+#: includes/print.php
+msgid "Pick list — Order #%s"
+msgstr ""
+
+#: includes/print.php
+msgid "Pick list"
+msgstr ""
+
+#. translators: %s: order number
+#: includes/print.php
+msgid "Order #%s"
+msgstr ""
+
+#: includes/print.php
+msgid "Qty"
+msgstr ""
+
+#: includes/print.php
+msgid "Product"
+msgstr ""
+
+#: includes/print.php
+msgid "Package"
+msgstr ""
+
+#: includes/print.php
+msgid "SKU"
+msgstr ""
+
+#: includes/print.php
+msgid "Print"
+msgstr ""
+
+#: includes/print.php
+msgid "Other"
+msgstr ""
