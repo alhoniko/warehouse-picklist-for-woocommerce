@@ -2,8 +2,8 @@
 /**
  * Plugin Name:       Warehouse Picklist for WooCommerce
  * Plugin URI:        https://github.com/alhoniko/warehouse-picklist-for-woocommerce
- * Description:       Printable pick lists for WooCommerce orders, grouped and ordered by product category to match your warehouse layout. Add your logo and use it as a shipment insert.
- * Version:           1.0.0
+ * Description:       Printable pick lists and a tablet-friendly pick mode for WooCommerce orders, grouped and ordered by product category to match your warehouse layout.
+ * Version:           1.1.0
  * Author:            Niko Alho
  * Author URI:        https://nikoalho.fi
  * License:           GPLv2 or later
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WHPL_VERSION', '1.0.0' );
+define( 'WHPL_VERSION', '1.1.0' );
 define( 'WHPL_PLUGIN_FILE', __FILE__ );
 define( 'WHPL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WHPL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -50,6 +50,8 @@ add_action( 'plugins_loaded', function () {
 
 	require_once WHPL_PLUGIN_DIR . 'includes/settings.php';
 	require_once WHPL_PLUGIN_DIR . 'includes/category-order.php';
+	require_once WHPL_PLUGIN_DIR . 'includes/capabilities.php';
+	require_once WHPL_PLUGIN_DIR . 'includes/picking.php';
 	require_once WHPL_PLUGIN_DIR . 'includes/print.php';
 	require_once WHPL_PLUGIN_DIR . 'includes/updates.php';
 } );

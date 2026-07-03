@@ -164,3 +164,81 @@ msgstr ""
 #: includes/print.php
 msgid "Other"
 msgstr ""
+
+#: includes/print.php
+msgid "Open picking"
+msgstr ""
+
+#. translators: %s: name of the person who picked the order
+#: includes/print.php
+msgid "Picked by %s"
+msgstr ""
+
+#: includes/capabilities.php
+msgid "Warehouse Picker"
+msgstr ""
+
+#: includes/picking.php
+msgid "Picking"
+msgstr ""
+
+#: includes/picking.php
+msgid "No orders waiting to be picked."
+msgstr ""
+
+#. translators: %s: number of order rows
+#: includes/picking.php
+msgid "Items: %s"
+msgstr ""
+
+#: includes/picking.php
+msgid "Picked"
+msgstr ""
+
+#: includes/picking.php
+msgid "Mark as missing"
+msgstr ""
+
+#: includes/picking.php
+msgid "Mark order as picked"
+msgstr ""
+
+#: includes/picking.php
+msgid "Some rows are not resolved yet. Complete anyway?"
+msgstr ""
+
+#. translators: 1: name, 2: date
+#: includes/picking.php
+msgid "Picking completed by %1$s · %2$s"
+msgstr ""
+
+#: includes/picking.php
+msgid "Reopen picking"
+msgstr ""
+
+#: includes/picking.php
+msgid "Back to queue"
+msgstr ""
+
+#. translators: %s: order number
+#: includes/picking.php
+msgid "Picking — Order #%s"
+msgstr ""
+
+#. translators: 1: picked row count, 2: total row count
+#: includes/picking.php
+msgid "Picking completed: %1$d of %2$d rows picked"
+msgstr ""
+
+#. translators: %s: comma-separated product names
+#: includes/picking.php
+msgid ", missing: %s"
+msgstr ""
+
+#: includes/picking.php
+msgid "Picking reopened."
+msgstr ""
+
+#: includes/picking.php
+msgid "Connection error, try again."
+msgstr ""

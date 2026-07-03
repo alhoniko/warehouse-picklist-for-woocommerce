@@ -126,3 +126,63 @@ msgstr "Tulosta"
 
 msgid "Other"
 msgstr "Muut"
+
+msgid "Open picking"
+msgstr "Avaa keräily"
+
+#. translators: %s: name of the person who picked the order
+msgid "Picked by %s"
+msgstr "Kerännyt %s"
+
+msgid "Warehouse Picker"
+msgstr "Keräilijä"
+
+msgid "Picking"
+msgstr "Keräily"
+
+msgid "No orders waiting to be picked."
+msgstr "Ei kerättäviä tilauksia."
+
+#. translators: %s: number of order rows
+msgid "Items: %s"
+msgstr "Rivejä: %s"
+
+msgid "Picked"
+msgstr "Kerätty"
+
+msgid "Mark as missing"
+msgstr "Merkitse puuttuvaksi"
+
+msgid "Mark order as picked"
+msgstr "Merkitse tilaus kerätyksi"
+
+msgid "Some rows are not resolved yet. Complete anyway?"
+msgstr "Kaikkia rivejä ei ole käsitelty. Merkitäänkö silti valmiiksi?"
+
+#. translators: 1: name, 2: date
+msgid "Picking completed by %1$s · %2$s"
+msgstr "Keräilyn kuittasi %1$s · %2$s"
+
+msgid "Reopen picking"
+msgstr "Avaa keräily uudelleen"
+
+msgid "Back to queue"
+msgstr "Takaisin jonoon"
+
+#. translators: %s: order number
+msgid "Picking — Order #%s"
+msgstr "Keräily — Tilaus #%s"
+
+#. translators: 1: picked row count, 2: total row count
+msgid "Picking completed: %1$d of %2$d rows picked"
+msgstr "Keräily valmis: %1$d/%2$d riviä kerätty"
+
+#. translators: %s: comma-separated product names
+msgid ", missing: %s"
+msgstr ", puuttuu: %s"
+
+msgid "Picking reopened."
+msgstr "Keräily avattu uudelleen."
+
+msgid "Connection error, try again."
+msgstr "Yhteysvirhe, yritä uudelleen."

@@ -12,49 +12,37 @@ add_action( 'woocommerce_admin_order_data_after_order_details', function ( $orde
 		return;
 	}
 
-	$url = wp_nonce_url(
+	$print_url = wp_nonce_url(
 		admin_url( 'admin-post.php?action=whpl_print_picklist&order_id=' . $order->get_id() ),
 		'whpl_print_picklist_' . $order->get_id()
 	);
-	echo '<p><a href="' . esc_url( $url ) . '" class="button" target="_blank">'
+	$pick_url  = admin_url( 'admin-post.php?action=whpl_pick&order_id=' . $order->get_id() );
+	echo '<p><a href="' . esc_url( $print_url ) . '" class="button" target="_blank">'
 		. esc_html__( 'Print pick list', 'warehouse-picklist' )
+		. '</a> <a href="' . esc_url( $pick_url ) . '" class="button" target="_blank">'
+		. esc_html__( 'Open picking', 'warehouse-picklist' )
 		. '</a></p>';
 } );
 
-add_action( 'admin_post_whpl_print_picklist', function () {
-	$order_id = isset( $_GET['order_id'] ) ? absint( $_GET['order_id'] ) : 0;
-
-	if ( ! $order_id || ! current_user_can( 'manage_woocommerce' ) ) {
-		wp_die( esc_html__( 'You do not have permission to do that.', 'warehouse-picklist' ) );
-	}
-
-	check_admin_referer( 'whpl_print_picklist_' . $order_id );
-
-	$order = wc_get_order( $order_id );
-	if ( ! $order ) {
-		wp_die( esc_html__( 'Order not found.', 'warehouse-picklist' ) );
-	}
-
-	header( 'Content-Type: text/html; charset=utf-8' );
-	whpl_render_picklist( $order );
-	exit;
-} );
-
 /**
- * Render the printable pick list HTML for an order.
+ * Collect the order's items bucketed by category in pick order.
  *
- * @param WC_Order $order Order to render.
+ * Shared by the printable pick list and the tablet pick mode.
+ *
+ * @param WC_Order $order Order.
+ * @return array { buckets: array<int, array[]>, other: array[], terms_by_id: array<int, string>, category_order: int[] }
  */
-function whpl_render_picklist( $order ) {
+function whpl_collect_picklist_rows( $order ) {
 	$settings         = whpl_get_settings();
 	$package_meta_key = $settings['package_meta_key'];
 	$category_order   = whpl_get_category_order();
 	$position_by_term = array_flip( $category_order );
+	$picks            = whpl_get_picks( $order );
 
 	$buckets      = array(); // term_id => rows.
 	$other_bucket = array();
 
-	foreach ( $order->get_items() as $item ) {
+	foreach ( $order->get_items() as $item_id => $item ) {
 		$product = $item->get_product();
 
 		$row = array(
@@ -84,6 +72,9 @@ function whpl_render_picklist( $order ) {
 		 * @param WC_Product|false   $product Product, or false if deleted.
 		 */
 		$row = apply_filters( 'whpl_picklist_row', $row, $item, $product );
+
+		$row['item_id'] = $item_id;
+		$row['pick']    = isset( $picks[ $item_id ]['status'] ) ? $picks[ $item_id ]['status'] : '';
 
 		// Categories live on the parent product for variations.
 		$term_ids = array();
@@ -137,7 +128,50 @@ function whpl_render_picklist( $order ) {
 		}
 	}
 
-	$logo_url = $settings['logo_id'] ? wp_get_attachment_image_url( $settings['logo_id'], 'medium' ) : '';
+	return array(
+		'buckets'        => $buckets,
+		'other'          => $other_bucket,
+		'terms_by_id'    => $terms_by_id,
+		'category_order' => $category_order,
+	);
+}
+
+add_action( 'admin_post_whpl_print_picklist', function () {
+	$order_id = isset( $_GET['order_id'] ) ? absint( $_GET['order_id'] ) : 0;
+
+	if ( ! $order_id || ! current_user_can( 'manage_woocommerce' ) ) {
+		wp_die( esc_html__( 'You do not have permission to do that.', 'warehouse-picklist' ) );
+	}
+
+	check_admin_referer( 'whpl_print_picklist_' . $order_id );
+
+	$order = wc_get_order( $order_id );
+	if ( ! $order ) {
+		wp_die( esc_html__( 'Order not found.', 'warehouse-picklist' ) );
+	}
+
+	header( 'Content-Type: text/html; charset=utf-8' );
+	whpl_render_picklist( $order );
+	exit;
+} );
+
+/**
+ * Render the printable pick list HTML for an order.
+ *
+ * @param WC_Order $order Order to render.
+ */
+function whpl_render_picklist( $order ) {
+	$settings         = whpl_get_settings();
+	$package_meta_key = $settings['package_meta_key'];
+
+	$collected      = whpl_collect_picklist_rows( $order );
+	$buckets        = $collected['buckets'];
+	$other_bucket   = $collected['other'];
+	$terms_by_id    = $collected['terms_by_id'];
+	$category_order = $collected['category_order'];
+
+	$completed = $order->get_meta( '_whpl_pick_completed' );
+	$logo_url  = $settings['logo_id'] ? wp_get_attachment_image_url( $settings['logo_id'], 'medium' ) : '';
 	?>
 	<!DOCTYPE html>
 	<html <?php language_attributes(); ?>>
@@ -160,7 +194,9 @@ function whpl_render_picklist( $order ) {
 			table { width: 100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed; }
 			th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #ddd; font-size: 14px; overflow: hidden; }
 			th.check, td.check { width: 30px; }
-			td.check span { display: inline-block; width: 18px; height: 18px; border: 1px solid #333; }
+			td.check span { display: inline-block; width: 18px; height: 18px; border: 1px solid #333; text-align: center; line-height: 18px; font-size: 13px; }
+			td.check span.picked { background: #e7f6ec; }
+			td.check span.missing { background: #fdecea; }
 			th.qty, td.qty { width: 60px; text-align: center; }
 			th.package, td.package { width: 110px; }
 			th.sku, td.sku { width: 90px; }
@@ -197,6 +233,13 @@ function whpl_render_picklist( $order ) {
 				) ); ?>
 				&middot; <?php echo esc_html( $order->get_formatted_billing_full_name() ); ?>
 				&middot; <?php echo esc_html( wc_format_datetime( $order->get_date_created() ) ); ?>
+				<?php if ( ! empty( $completed['user'] ) ) : ?>
+					&middot; <?php echo esc_html( sprintf(
+						/* translators: %s: name of the person who picked the order */
+						__( 'Picked by %s', 'warehouse-picklist' ),
+						$completed['user']
+					) ); ?> (<?php echo esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $completed['time'] ) ); ?>)
+				<?php endif; ?>
 			</div>
 
 			<?php
@@ -222,7 +265,13 @@ function whpl_render_picklist( $order ) {
 						<?php foreach ( $rows as $row ) : ?>
 							<tr>
 								<?php if ( $settings['show_checkboxes'] ) : ?>
-									<td class="check"><span></span></td>
+									<td class="check"><span class="<?php echo esc_attr( $row['pick'] ); ?>"><?php
+										if ( 'picked' === $row['pick'] ) {
+											echo '&#10003;';
+										} elseif ( 'missing' === $row['pick'] ) {
+											echo '!';
+										}
+									?></span></td>
 								<?php endif; ?>
 								<td class="qty"><?php echo esc_html( $row['qty'] ); ?></td>
 								<td class="product"><?php echo esc_html( $row['name'] ); ?></td>
