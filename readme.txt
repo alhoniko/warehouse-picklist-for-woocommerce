@@ -4,7 +4,7 @@ Tags: woocommerce, pick list, picking list, packing slip, warehouse
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,13 @@ No — it opens a print-optimized HTML view and uses the browser's print dialog 
 Users with the `manage_woocommerce` capability (shop managers and admins).
 
 == Changelog ==
+
+= 1.2.0 =
+* Optional order status automation: Processing → In picking (first item picked) → Picked (completed), with reopen support. Enable under WooCommerce → Picklist.
+* New customer email "Order in picking", sent when picking starts. Toggle it under WooCommerce → Settings → Emails.
+* Status badges and colors on the admin order list; pick queue now includes In picking orders.
+* Printed pick lists with pick marks now include a legend (✓ = picked, ! = missing item).
+* Fixed the progress bar jumping when tapping rows quickly, and sticky category headings painting over the bottom action bar.
 
 = 1.1.1 =
 * Pick mode: the missing-item button now has a text label instead of a bare "!" icon.

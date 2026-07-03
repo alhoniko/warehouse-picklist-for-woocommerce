@@ -171,6 +171,7 @@ function whpl_render_picklist( $order ) {
 	$category_order = $collected['category_order'];
 
 	$completed = $order->get_meta( '_whpl_pick_completed' );
+	$has_picks = count( whpl_get_picks( $order ) ) > 0;
 	$logo_url  = $settings['logo_id'] ? wp_get_attachment_image_url( $settings['logo_id'], 'medium' ) : '';
 	?>
 	<!DOCTYPE html>
@@ -189,7 +190,8 @@ function whpl_render_picklist( $order ) {
 			.head img { max-height: 60px; max-width: 240px; }
 			h1 { font-size: 20px; margin: 0 0 4px; }
 			.text-logo { font-size: 22px; font-weight: 700; white-space: nowrap; }
-			.meta { color: #555; margin-bottom: 24px; }
+			.meta { color: #555; margin-bottom: 6px; }
+			.legend { color: #555; font-size: 13px; margin-bottom: 24px; }
 			h2 { font-size: 15px; background: #f0f0f0; padding: 6px 10px; margin-top: 28px; }
 			table { width: 100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed; }
 			th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #ddd; font-size: 14px; overflow: hidden; }
@@ -241,6 +243,9 @@ function whpl_render_picklist( $order ) {
 					) ); ?> (<?php echo esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $completed['time'] ) ); ?>)
 				<?php endif; ?>
 			</div>
+			<?php if ( $has_picks && $settings['show_checkboxes'] ) : ?>
+				<div class="legend"><?php esc_html_e( '✓ = picked · ! = missing item', 'warehouse-picklist' ); ?></div>
+			<?php endif; ?>
 
 			<?php
 			$render_table = function ( $rows ) use ( $settings, $package_meta_key ) {

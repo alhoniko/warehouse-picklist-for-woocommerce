@@ -14,12 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function whpl_get_settings() {
 	$defaults = array(
-		'logo_id'          => 0,
-		'business_name'    => get_bloginfo( 'name' ),
-		'footer_note'      => '',
-		'show_sku'         => 1,
-		'show_checkboxes'  => 1,
-		'package_meta_key' => '',
+		'logo_id'           => 0,
+		'business_name'     => get_bloginfo( 'name' ),
+		'footer_note'       => '',
+		'show_sku'          => 1,
+		'show_checkboxes'   => 1,
+		'package_meta_key'  => '',
+		'status_automation' => 0,
 	);
 
 	$saved = get_option( WHPL_SETTINGS_OPTION, array() );
@@ -76,12 +77,13 @@ add_action( 'admin_init', function () {
 	check_admin_referer( 'whpl_save_settings', 'whpl_settings_nonce' );
 
 	$settings = array(
-		'logo_id'          => isset( $_POST['whpl_logo_id'] ) ? absint( $_POST['whpl_logo_id'] ) : 0,
-		'business_name'    => isset( $_POST['whpl_business_name'] ) ? sanitize_text_field( wp_unslash( $_POST['whpl_business_name'] ) ) : '',
-		'footer_note'      => isset( $_POST['whpl_footer_note'] ) ? sanitize_textarea_field( wp_unslash( $_POST['whpl_footer_note'] ) ) : '',
-		'show_sku'         => empty( $_POST['whpl_show_sku'] ) ? 0 : 1,
-		'show_checkboxes'  => empty( $_POST['whpl_show_checkboxes'] ) ? 0 : 1,
-		'package_meta_key' => isset( $_POST['whpl_package_meta_key'] ) ? sanitize_text_field( wp_unslash( $_POST['whpl_package_meta_key'] ) ) : '',
+		'logo_id'           => isset( $_POST['whpl_logo_id'] ) ? absint( $_POST['whpl_logo_id'] ) : 0,
+		'business_name'     => isset( $_POST['whpl_business_name'] ) ? sanitize_text_field( wp_unslash( $_POST['whpl_business_name'] ) ) : '',
+		'footer_note'       => isset( $_POST['whpl_footer_note'] ) ? sanitize_textarea_field( wp_unslash( $_POST['whpl_footer_note'] ) ) : '',
+		'show_sku'          => empty( $_POST['whpl_show_sku'] ) ? 0 : 1,
+		'show_checkboxes'   => empty( $_POST['whpl_show_checkboxes'] ) ? 0 : 1,
+		'package_meta_key'  => isset( $_POST['whpl_package_meta_key'] ) ? sanitize_text_field( wp_unslash( $_POST['whpl_package_meta_key'] ) ) : '',
+		'status_automation' => empty( $_POST['whpl_status_automation'] ) ? 0 : 1,
 	);
 
 	update_option( WHPL_SETTINGS_OPTION, $settings );
@@ -175,6 +177,16 @@ function whpl_render_settings_tab() {
 						<input type="checkbox" name="whpl_show_checkboxes" value="1" <?php checked( $settings['show_checkboxes'] ); ?>>
 						<?php esc_html_e( 'Show pick checkboxes', 'warehouse-picklist' ); ?>
 					</label>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Order statuses', 'warehouse-picklist' ); ?></th>
+				<td>
+					<label>
+						<input type="checkbox" name="whpl_status_automation" value="1" <?php checked( $settings['status_automation'] ); ?>>
+						<?php esc_html_e( 'Update the order status during picking', 'warehouse-picklist' ); ?>
+					</label>
+					<p class="description"><?php esc_html_e( 'Processing → In picking when the first item is picked, → Picked when completed. The customer notification email can be enabled in WooCommerce → Settings → Emails.', 'warehouse-picklist' ); ?></p>
 				</td>
 			</tr>
 			<tr>

@@ -150,6 +150,9 @@ msgstr "Rivejä: %s"
 msgid "Picked"
 msgstr "Kerätty"
 
+msgid "Missing"
+msgstr "Puuttuu"
+
 msgid "Mark as missing"
 msgstr "Merkitse puuttuvaksi"
 
@@ -186,3 +189,49 @@ msgstr "Keräily avattu uudelleen."
 
 msgid "Connection error, try again."
 msgstr "Yhteysvirhe, yritä uudelleen."
+
+msgid "✓ = picked · ! = missing item"
+msgstr "✓ = kerätty · ! = puuttuva tuote"
+
+msgid "In picking"
+msgstr "Keräilyssä"
+
+#. translators: %s: number of orders
+msgid "In picking <span class=\"count\">(%s)</span>"
+msgid_plural "In picking <span class=\"count\">(%s)</span>"
+msgstr[0] "Keräilyssä <span class=\"count\">(%s)</span>"
+msgstr[1] "Keräilyssä <span class=\"count\">(%s)</span>"
+
+#. translators: %s: number of orders
+msgid "Picked <span class=\"count\">(%s)</span>"
+msgid_plural "Picked <span class=\"count\">(%s)</span>"
+msgstr[0] "Kerätty <span class=\"count\">(%s)</span>"
+msgstr[1] "Kerätty <span class=\"count\">(%s)</span>"
+
+msgid "Order statuses"
+msgstr "Tilauksen tilat"
+
+msgid "Update the order status during picking"
+msgstr "Päivitä tilauksen tilaa keräilyn aikana"
+
+msgid "Processing → In picking when the first item is picked, → Picked when completed. The customer notification email can be enabled in WooCommerce → Settings → Emails."
+msgstr "Käsittelyssä → Keräilyssä kun ensimmäinen rivi kuitataan, → Kerätty kun keräily valmistuu. Asiakkaan sähköposti-ilmoituksen voi kytkeä päälle kohdassa WooCommerce → Asetukset → Sähköpostit."
+
+msgid "Order in picking"
+msgstr "Tilaus keräilyssä"
+
+msgid "Sent to the customer when picking of their order starts."
+msgstr "Lähetetään asiakkaalle, kun tilauksen keräily alkaa."
+
+msgid "[{site_title}] Your order #{order_number} is being prepared"
+msgstr "[{site_title}] Tilaustasi #{order_number} valmistellaan"
+
+msgid "Your order is being prepared"
+msgstr "Tilaustasi valmistellaan"
+
+#. translators: %s: customer first name
+msgid "Hi %s,"
+msgstr "Hei %s,"
+
+msgid "We have started preparing your order at our warehouse. We will notify you when it is on its way."
+msgstr "Tilauksesi keräily on aloitettu varastollamme. Ilmoitamme, kun tilaus on matkalla."

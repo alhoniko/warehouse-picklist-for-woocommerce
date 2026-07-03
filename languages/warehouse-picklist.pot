@@ -196,6 +196,10 @@ msgid "Picked"
 msgstr ""
 
 #: includes/picking.php
+msgid "Missing"
+msgstr ""
+
+#: includes/picking.php
 msgid "Mark as missing"
 msgstr ""
 
@@ -241,4 +245,63 @@ msgstr ""
 
 #: includes/picking.php
 msgid "Connection error, try again."
+msgstr ""
+
+#: includes/print.php
+msgid "✓ = picked · ! = missing item"
+msgstr ""
+
+#: includes/order-status.php
+msgid "In picking"
+msgstr ""
+
+#. translators: %s: number of orders
+#: includes/order-status.php
+msgid "In picking <span class=\"count\">(%s)</span>"
+msgid_plural "In picking <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: number of orders
+#: includes/order-status.php
+msgid "Picked <span class=\"count\">(%s)</span>"
+msgid_plural "Picked <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/settings.php
+msgid "Order statuses"
+msgstr ""
+
+#: includes/settings.php
+msgid "Update the order status during picking"
+msgstr ""
+
+#: includes/settings.php
+msgid "Processing → In picking when the first item is picked, → Picked when completed. The customer notification email can be enabled in WooCommerce → Settings → Emails."
+msgstr ""
+
+#: includes/emails/class-whpl-email-order-picking.php
+msgid "Order in picking"
+msgstr ""
+
+#: includes/emails/class-whpl-email-order-picking.php
+msgid "Sent to the customer when picking of their order starts."
+msgstr ""
+
+#: includes/emails/class-whpl-email-order-picking.php
+msgid "[{site_title}] Your order #{order_number} is being prepared"
+msgstr ""
+
+#: includes/emails/class-whpl-email-order-picking.php
+msgid "Your order is being prepared"
+msgstr ""
+
+#. translators: %s: customer first name
+#: templates/emails/whpl-order-picking.php
+msgid "Hi %s,"
+msgstr ""
+
+#: templates/emails/whpl-order-picking.php
+msgid "We have started preparing your order at our warehouse. We will notify you when it is on its way."
 msgstr ""

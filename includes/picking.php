@@ -77,6 +77,8 @@ function whpl_set_pick( $order, $item_id, $status ) {
 		$order->update_meta_data( '_whpl_pick_started', time() );
 	}
 	$order->save();
+
+	whpl_status_on_pick_started( $order );
 }
 
 /**
@@ -124,6 +126,8 @@ function whpl_complete_pick( $order ) {
 
 	$order->add_order_note( $note . ' · ' . $user->display_name );
 
+	whpl_status_on_pick_completed( $order );
+
 	/**
 	 * Fires when an order has been marked as picked.
 	 *
@@ -144,6 +148,8 @@ function whpl_reopen_pick( $order ) {
 
 	$user = wp_get_current_user();
 	$order->add_order_note( __( 'Picking reopened.', 'warehouse-picklist' ) . ' · ' . $user->display_name );
+
+	whpl_status_on_pick_reopened( $order );
 }
 
 /**
@@ -218,7 +224,7 @@ function whpl_pick_view_head( $title ) {
 			.row[data-status="missing"] .tick::after { content: "!"; position: absolute; inset: 0; line-height: 24px; color: #d63638; }
 			.row[data-status="missing"] .miss { background: #d63638; border-color: #d63638; color: #fff; }
 			#whpl-complete.ready { background: #2fb344; }
-			.actionbar { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid #dcdcde; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
+			.actionbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: #fff; border-top: 1px solid #dcdcde; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
 			.actionbar .inner { max-width: 760px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
 			.progress-track { flex: 1; height: 8px; background: #dcdcde; border-radius: 4px; overflow: hidden; }
 			.progress-fill { height: 100%; width: 0; background: #2fb344; transition: width .2s; }
@@ -247,7 +253,7 @@ function whpl_pick_view_head( $title ) {
 add_action( 'admin_post_whpl_pick_queue', function () {
 	whpl_pick_auth();
 
-	$statuses = apply_filters( 'whpl_pick_queue_statuses', array( 'processing' ) );
+	$statuses = apply_filters( 'whpl_pick_queue_statuses', array( 'processing', 'picking' ) );
 	$orders   = wc_get_orders( array(
 		'status'  => $statuses,
 		'limit'   => 50,
@@ -458,14 +464,14 @@ add_action( 'admin_post_whpl_pick', function () {
 		function setPick(row, status) {
 			var prev = row.dataset.status;
 			// Optimistic: flip the row immediately, revert if the save fails.
+			// The DOM is the single source of truth for the progress bar —
+			// applying server-side counters here would make the bar jump when
+			// rapid taps resolve out of order.
 			row.dataset.status = status;
 			refresh(localProgress());
 
 			post('whpl_set_pick', { item_id: row.dataset.item, status: status }).then(function (resp) {
-				if (resp && resp.success) {
-					row.dataset.status = resp.data.status;
-					refresh(resp.data.progress);
-				} else {
+				if (!(resp && resp.success)) {
 					row.dataset.status = prev;
 					refresh(localProgress());
 					toast();
